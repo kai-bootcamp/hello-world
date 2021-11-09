@@ -1,1 +1,2 @@
-runtime: go 
+runtime: go117
+api_version: go1
