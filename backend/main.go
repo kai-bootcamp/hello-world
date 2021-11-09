@@ -10,6 +10,7 @@ func main() {
  general := server.Group("/general")
  {
   general.GET("/hello", controller.Hello)
+  general.GET("/random", controller.Random)
  }
 
  server.Logger.Fatal(server.Start(":8081"))
