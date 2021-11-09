@@ -7,18 +7,25 @@ import (
 )
 
 const PORT = "8080"
+const ERROR404 = "404 page not found !!!"
 
-func helloHandler(res http.ResponseWriter, req *http.Request)
+func helloHandler(w http.ResponseWriter, r *http.Request) {
+	fmt.Fprintf(w, r.URL.Path)
+	if r.URL.Path != "/hello" {
+		http.Error(w, "wdwdwdw", http.StatusNotFound)
+		return
+	}
+	if r.Method != "GET" {
+		http.Error(w, "Method is not Support", http.StatusNotFound)
+	}
+	fmt.Fprintf(w, "Hello!")
+}
 
 func main() {
-	fileserver := http.FileServer(http.Dir("./static"))
-	http.Handle("/", fileserver)
-	http.HandleFunc("/form", formHandler)
+	fileServer := http.FileServer(http.Dir("./static"))
+	http.Handle("/", fileServer)
 	http.HandleFunc("/hello", helloHandler)
 
 	fmt.Print("Starting server at port: ", PORT)
-	if err := http.ListenAndServe(":8080", nil); err != nill {
-		panic(err)
-	}
-
+	log.Fatal(http.ListenAndServe(":8080", nil))
 }
