@@ -1,7 +1,9 @@
 import logo from './logo.svg';
+import strApi from './api/strApi';
+
 import './App.css';
 import { Routes, Route, Link } from "react-router-dom";
-
+import React, { useState, useEffect } from 'react';
 
 function App() {
   return (
@@ -32,6 +34,14 @@ function HelloWorld() {
 }
 
 function Homework2() {
+  useEffect( () => {
+    const fetchString = async () => {
+      const str = await strApi.getStr();
+      console.log(str);
+    }
+
+    fetchString();
+  })
   return (
     <>
       <main>
