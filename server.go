@@ -1,7 +1,6 @@
 package main
 
 import (
-	"fmt"
 	"hello-world/wallet"
 	"html/template"
 	"net/http"
@@ -33,7 +32,6 @@ func handlerRandomData(writer http.ResponseWriter, request *http.Request) {
 		http.ServeFile(writer, request, "webpages/error_view.html")
 	}
 	wallet, err := wallet.RandomAddress()
-	fmt.Println(wallet)
 	if err != nil {
 		http.ServeFile(writer, request, "webpages/error_view.html")
 	}
