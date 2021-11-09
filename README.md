@@ -3,4 +3,4 @@
 https://hw-be.herokuapp.com/
 
 ## link fe
-https://hw-fe.herokuapp.com/
+https://hw2-fe.herokuapp.com/
