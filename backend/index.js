@@ -2,7 +2,7 @@ const express = require("express");
 const app = express();
 const server = require("http").Server(app);
 const cors = require("cors"); 
-
+const port = process.env.PORT || 5000;
 app.use(cors());
 
 app.get("/",(req, res) => {
@@ -39,6 +39,6 @@ app.get("/",(req, res) => {
     res.json(response)
 });
 
-server.listen(5000, () => {
+server.listen(port, () => {
     console.log('Server start at 5000')
 });

@@ -11,7 +11,7 @@ import { Box } from '@mui/system';
 import { Checkbox, Typography } from '@mui/material';
 
 function App() {
-  const url = 'http://localhost:5000/';
+  const url = 'https://hw-be.herokuapp.com/';
   const [data, setData] = useState(null);
 
   const fetchData = async () => {
