@@ -10,7 +10,6 @@ const PORT = "8080"
 const ERROR404 = "404 page not found !!!"
 
 func helloHandler(w http.ResponseWriter, r *http.Request) {
-	fmt.Fprintf(w, r.URL.Path)
 	if r.URL.Path != "/hello" {
 		http.Error(w, "wdwdwdw", http.StatusNotFound)
 		return
@@ -18,7 +17,7 @@ func helloHandler(w http.ResponseWriter, r *http.Request) {
 	if r.Method != "GET" {
 		http.Error(w, "Method is not Support", http.StatusNotFound)
 	}
-	fmt.Fprintf(w, "Hello!")
+	fmt.Fprintf(w, "Hello BlockChain!")
 }
 
 func main() {
