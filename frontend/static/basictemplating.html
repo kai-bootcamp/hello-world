@@ -1,0 +1,23 @@
+{{if .Success}}
+    <h1>{{.Title}}</h1>
+    <h2>Balance is : {{.Address}}</h2>
+{{else}}
+    <h1>Contact</h1>
+    <form method="POST">
+        <label>Address:</label><br />
+        <textarea name="address"></textarea><br />
+        <input type="submit">
+    </form>
+{{end}}
+
+<!-- {{if .Success}}
+    <h1>Thanks for your message!</h1>
+    <h2>{{.Address}}</h2>
+{{else}}
+    <h1>{{.Title}}</h1>
+    <form method="POST">
+        <label>Address:</label><br />
+        <textarea name="address"></textarea><br />
+        <input type="submit" title="test">
+    </form>
+{{end}} -->
