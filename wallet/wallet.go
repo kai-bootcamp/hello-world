@@ -10,19 +10,41 @@ import (
 	"net/http"
 )
 
+const NumberAddress = 20
+
+type WalletData struct {
+	Items []Wallet
+}
+
 type Wallet struct {
 	Address    string
 	Balance    string
 	PrivateKey string
 }
 
-func RandomAddress() (Wallet, error) {
+func GroupRandomAddress(wallets *WalletData, channelWallets *chan WalletData) {
+	data, err := randomAddress()
+	if err == nil {
+		wallets.Items = append(wallets.Items, data)
+	} else {
+		wallets.Items = append(wallets.Items, data)
+	}
+	if len(wallets.Items) == NumberAddress {
+		*channelWallets <- *wallets
+	}
+}
+
+
+func randomAddress() (Wallet, error) {
 	seed, err := hdwallet.GenSeed(128)
 	if err != nil {
 		return Wallet{}, err
 	}
 	masterKey := hdwallet.MasterKey(seed)
 	childKey, _ := masterKey.Child(0)
+	if err != nil {
+		return Wallet{}, err
+	}
 	childPub := childKey.Pub()
 	address := childPub.Address()
 	balance := checkBalanceOfAddress(address)
@@ -49,5 +71,6 @@ func checkBalanceOfAddress(address string) float64 {
 			return (fundedSum - spentSum) / math.Pow10(8)
 		}
 	}
+	fmt.Println("Get balance error")
 	return 0.0
 }

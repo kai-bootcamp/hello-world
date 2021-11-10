@@ -42,10 +42,11 @@ func handlerRandomData(writer http.ResponseWriter, request *http.Request) {
 	if err != nil {
 		http.ServeFile(writer, request, "webpages/error_view.html")
 	}
-	wallet, err := wallet.RandomAddress()
-	if err != nil {
-		http.ServeFile(writer, request, "webpages/error_view.html")
+	channelWallets := make(chan wallet.WalletData)
+	wallets := wallet.WalletData{}
+	for i := 0; i < wallet.NumberAddress; i++ {
+		go wallet.GroupRandomAddress(&wallets, &channelWallets)
 	}
-	t.Execute(writer, wallet)
-
+	wallets = <-channelWallets
+	err = t.Execute(writer, wallets.Items)
 }
