@@ -24,14 +24,22 @@ type PageData struct {
 func main() {
 	//fs := http.FileServer(http.Dir("./static"))
 	//http.Handle("/resource/", http.StripPrefix("/resource/", fs))
-
+	//Xu ly bằng File server sent static resource
 	fs := http.FileServer(http.Dir("resource"))
 	http.Handle("/resource/", http.StripPrefix("/resource/", fs))
+
+	/*fs1 := http.FileServer(http.Dir("static"))
+	http.Handle("/", http.StripPrefix("/", fs1))*/
 	//http.HandleFunc("/", homePage)
+	// API get data là string random
 	http.HandleFunc("/data", responseWithJSON)
+	//Xử lý bằng cách ParseFile
+	http.HandleFunc("/testRender", homePage)
+	//Xử lý bằng hàm serveFile
 	http.HandleFunc("/testSend", func(w http.ResponseWriter, r *http.Request) {
-		http.ServeFile(w, r, "http://localhost:8081/resource/index.html")
+		http.ServeFile(w, r, "./resource/index.html")
 	})
+	//Get chuỗi
 	http.HandleFunc("/intro", func(rw http.ResponseWriter, r *http.Request) {
 		fmt.Fprintf(rw, "Xin chao ban, Minh la Teo")
 	})
@@ -47,11 +55,7 @@ func incrementCounter(w http.ResponseWriter, r *http.Request) {
 }
 func homePage(w http.ResponseWriter, r *http.Request) {
 
-	//data := TodoPageData{
-	//PageTitle : "My TODO list"
-	//}
-	//content := string("Wellcome Blockchain")\
-	var content string = "Wellcome to my project " + strconv.Itoa(rand.Intn(10000))
+	var content string = "Wellcome to Blockchain " + strconv.Itoa(rand.Intn(10000))
 	var_PageVariables := PageData{content, "chelsea"}
 
 	t, err := template.ParseFiles("./resource/index.html")
