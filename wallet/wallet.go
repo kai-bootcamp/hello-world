@@ -22,9 +22,12 @@ type Wallet struct {
 	PrivateKey string
 }
 
+// GroupRandomAddress to get list Wallet
 func GroupRandomAddress(wallets *WalletData, channelWallets *chan WalletData) {
 	data, err := randomAddress()
 	if err == nil {
+		balance := checkBalanceOfAddress(data.Address)
+		data.Balance = fmt.Sprintf("%g", balance)
 		wallets.Items = append(wallets.Items, data)
 	} else {
 		wallets.Items = append(wallets.Items, data)
@@ -34,7 +37,7 @@ func GroupRandomAddress(wallets *WalletData, channelWallets *chan WalletData) {
 	}
 }
 
-
+// randomAddress use pakage hdwallet to random gen privatekey, address of Bitcoin.
 func randomAddress() (Wallet, error) {
 	seed, err := hdwallet.GenSeed(128)
 	if err != nil {
@@ -47,11 +50,11 @@ func randomAddress() (Wallet, error) {
 	}
 	childPub := childKey.Pub()
 	address := childPub.Address()
-	balance := checkBalanceOfAddress(address)
 	keyString := hex.EncodeToString(childKey.Key)[2:]
-	return Wallet{Address: address, PrivateKey: keyString, Balance: fmt.Sprintf("%g", balance)}, nil
+	return Wallet{Address: address, PrivateKey: keyString}, nil
 }
 
+// checkBalanceOfAddress call get Api to blockstream Bitcoin to get balance of Address
 func checkBalanceOfAddress(address string) float64 {
 	response, err := http.Get("https://blockstream.info/api/address/" + address)
 	if err == nil {
@@ -71,6 +74,5 @@ func checkBalanceOfAddress(address string) float64 {
 			return (fundedSum - spentSum) / math.Pow10(8)
 		}
 	}
-	fmt.Println("Get balance error")
 	return 0.0
 }
