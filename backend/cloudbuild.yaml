@@ -1,0 +1,16 @@
+steps:
+  - name: 'gcr.io/cloud-builders/docker'
+    entrypoint: 'bash'
+    args: ['-c', 'docker build -t gcr.io/$PROJECT_ID/${_INSTANCE_NAME} .']
+  - name: 'gcr.io/cloud-builders/docker'
+    args: ['push', 'gcr.io/$PROJECT_ID/${_INSTANCE_NAME}']
+  - name: 'gcr.io/google.com/cloudsdktool/cloud-sdk'
+    entrypoint: 'gcloud'
+    args: ['run', 'deploy', '${_INSTANCE_NAME}', '--image', 'gcr.io/$PROJECT_ID/${_INSTANCE_NAME}', '--platform', 'managed', '--region', '${_REGION}', '--allow-unauthenticated']
+
+substitutions:
+  _INSTANCE_NAME: hello-world-backend
+  _REGION: 'asia-southeast1'
+
+images:
+  - "gcr.io/$PROJECT_ID/${_INSTANCE_NAME}"
