@@ -3,7 +3,9 @@ package main
 import (
 	"hello-world/wallet"
 	"html/template"
+	"log"
 	"net/http"
+	"os"
 )
 
 const root = "/"
@@ -14,9 +16,18 @@ func main() {
 
 }
 
+var port string
+
+func init() {
+	port = os.Getenv("PORT")
+	if port == "" {
+		port = "8080"
+	}
+}
+
 // listenOnPort
 func listenOnPort() {
-	http.ListenAndServe(":8080", nil)
+	log.Fatal(http.ListenAndServe(":"+port, nil))
 }
 
 // handlerWebroot tells the http package to handle all request to the web root with handlerRandomData.

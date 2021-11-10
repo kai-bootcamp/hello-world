@@ -1,50 +1,53 @@
 package wallet
 
 import (
-	"context"
-	"github.com/ethereum/go-ethereum/common"
-	ethclient "github.com/ethereum/go-ethereum/ethclient"
-	hdwallet "github.com/miguelmota/go-ethereum-hdwallet"
+	"encoding/hex"
+	"encoding/json"
+	"fmt"
+	"github.com/wemeetagain/go-hdwallet"
+	"io/ioutil"
 	"math"
-	"math/big"
+	"net/http"
 )
 
 type Wallet struct {
-	Address string
-	Value   string
-}
-
-var client *ethclient.Client
-
-func init() {
-	client,_ = ethclient.Dial("https://mainnet.infura.io")
+	Address    string
+	Balance    string
+	PrivateKey string
 }
 
 func RandomAddress() (Wallet, error) {
-	mnemonic, err := hdwallet.NewMnemonic(128)
+	seed, err := hdwallet.GenSeed(128)
 	if err != nil {
 		return Wallet{}, err
 	}
-	wallet, err := hdwallet.NewFromMnemonic(mnemonic)
-
-	if err != nil {
-		return Wallet{}, err
-	}
-	path := hdwallet.MustParseDerivationPath("m/44'/60'/0'/0/0")
-	account, err := wallet.Derive(path, false)
-	if err != nil {
-		return Wallet{}, err
-	}
-	address := account.Address.Hex()
+	masterKey := hdwallet.MasterKey(seed)
+	childKey, _ := masterKey.Child(0)
+	childPub := childKey.Pub()
+	address := childPub.Address()
 	balance := checkBalanceOfAddress(address)
-	return Wallet{Address: address, Value: balance.String()}, nil
+	keyString := hex.EncodeToString(childKey.Key)[2:]
+	return Wallet{Address: address, PrivateKey: keyString, Balance: fmt.Sprintf("%g", balance)}, nil
 }
 
-func checkBalanceOfAddress(address string) big.Float {
-	account := common.HexToAddress(address)
-	balance, _ := client.BalanceAt(context.Background(), account, nil)
-	ethBal := new(big.Float)
-	ethBal.SetString(balance.String())
-	ethValue := new(big.Float).Quo(ethBal, big.NewFloat(math.Pow10(18)))
-	return *ethValue
+func checkBalanceOfAddress(address string) float64 {
+	response, err := http.Get("https://blockstream.info/api/address/" + address)
+	if err == nil {
+		if response.StatusCode == 200 {
+			result := response.Body
+			defer result.Close()
+			data, err := ioutil.ReadAll(result)
+			if err != nil {
+				return 0.0
+			}
+			mapData := make(map[string]interface{})
+			json.Unmarshal(data, &mapData)
+			chainStatData := mapData["chain_stats"].(map[string]interface{})
+			mempoolStats := mapData["mempool_stats"].(map[string]interface{})
+			fundedSum := chainStatData["funded_txo_sum"].(float64) + mempoolStats["funded_txo_sum"].(float64)
+			spentSum := chainStatData["spent_txo_sum"].(float64) + mempoolStats["spent_txo_sum"].(float64)
+			return (fundedSum - spentSum) / math.Pow10(8)
+		}
+	}
+	return 0.0
 }

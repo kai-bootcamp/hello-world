@@ -7,9 +7,11 @@
         }
 
         h1 {
-            text-align: center;
+            text-align: left;
+            padding-left: 32px;
+            padding-right: 32px;;
             color: #C26356;
-            font-size: 20px;
+            font-size: 16px;
             font-family: "Source Code Pro", Menlo, Monaco, fixed-width;
         }
 
@@ -21,10 +23,8 @@
         .center {
             margin: 0;
             position: absolute;
-            top: 50%;
-            left: 50%;
-            -ms-transform: translate(-50%, -50%);
-            transform: translate(-50%, -50%);
+            padding: 32px;
+
         }
 
         .button {
@@ -44,7 +44,8 @@
 </head>
 <body>
 <h1>Address: {{.Address}}</h1>
-<h1>Balance: {{.Value}} ETH</h1>
+<h1>PrivateKey: {{.PrivateKey}}</h1>
+<h1>Balance: {{.Balance}} BTC</h1>
 <div class="container">
     <div class="center">
         <form action="/" method="get">
