@@ -4,7 +4,9 @@ import (
 	// "fmt"
 	"math/rand"
 	"net/http"
+	"os"
 	"time"
+
 	"github.com/labstack/echo/v4"
 	"github.com/labstack/echo/v4/middleware"
 )
@@ -33,6 +35,8 @@ func hw2(c echo.Context) error {
 }
 
 func main() {
+
+	port := os.Getenv("PORT")
 	server := echo.New()
 	server.Use(middleware.CORSWithConfig(middleware.CORSConfig{
 		AllowOrigins: []string{"*"},
@@ -41,6 +45,8 @@ func main() {
 
 	server.GET("/hw1", hw1)
 	server.GET("/hw2", hw2)
-
-	server.Logger.Fatal(server.Start(":8081"))
+	
+	// server.Logger.Fatal(server.Start(":8081"))
+	server.Logger.Fatal(server.Start(":"+port))
+	
 }
