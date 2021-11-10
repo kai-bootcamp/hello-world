@@ -1,7 +1,8 @@
 function getString(){
   console.log("Get String from Backend");
 var request = new XMLHttpRequest();
-request.open('GET', 'http://localhost:8081/data', true);
+console.log("url app: " + location.href )
+request.open('GET', '/data', true);
 request.onload = function () {
 
   // Begin accessing JSON data here

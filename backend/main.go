@@ -22,12 +22,15 @@ type PageData struct {
 }
 
 func main() {
-	fs := http.FileServer(http.Dir("./static"))
+	//fs := http.FileServer(http.Dir("./static"))
+	//http.Handle("/resource/", http.StripPrefix("/resource/", fs))
+
+	fs := http.FileServer(http.Dir("resource"))
 	http.Handle("/resource/", http.StripPrefix("/resource/", fs))
-	http.HandleFunc("/", homePage)
+	//http.HandleFunc("/", homePage)
 	http.HandleFunc("/data", responseWithJSON)
 	http.HandleFunc("/testSend", func(w http.ResponseWriter, r *http.Request) {
-		http.ServeFile(w, r, "./resource/")
+		http.ServeFile(w, r, "http://localhost:8081/resource/index.html")
 	})
 	http.HandleFunc("/intro", func(rw http.ResponseWriter, r *http.Request) {
 		fmt.Fprintf(rw, "Xin chao ban, Minh la Teo")
