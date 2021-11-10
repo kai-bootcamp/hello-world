@@ -1,0 +1,47 @@
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>V for Vegeta</title>
+    <style>
+        .header{
+            text-align: center;
+        }
+        button {
+            height: 50px;
+            background-color: darkgray;
+            color: white;
+            cursor: pointer;
+        }
+        .box {
+            border: solid 1px;
+            background: #ccc;
+            padding: 6px;
+        }
+    </style>
+</head>
+<body>
+   <h1 class="header">Welcome to V-droid</h1> 
+   <p id="par"></p>
+   <button>Generate random string</button>
+
+
+   <script>
+    const random_url = "http://localhost:8081/general/random";
+
+    document.querySelector('button').addEventListener('click', async function() {
+        const response = await fetch(random_url);
+
+        var data = await response.json();
+        console.log(data);
+        show(data);
+    }, false);
+
+    function show(data) {
+        let result = `<h2>${data.data}</h2>`;
+        document.getElementById("par").innerHTML= result;
+    }
+   </script>
+</body>
+</html>
