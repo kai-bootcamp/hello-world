@@ -34,20 +34,32 @@ function HelloWorld() {
 }
 
 function Homework2() {
-  useEffect( () => {
-    const fetchString = async () => {
-      const str = await strApi.getStr();
-      console.log(str);
-    }
+  const [stTags, setStTags] = useState([]);
 
+  useEffect(() =>  {
+    const fetchString = async () => {
+        const str = await strApi.getStr();
+        setStTags(str);
+    }
     fetchString();
-  })
+  }, [])
+
+    // const hello = useEffect(() => {
+    //         fetchString()
+    //     }, []);
+    
+    // const fetchString = async () => {
+    //   const str = await strApi.getStr();
+    //   console.log(str);
+    //   return str;
+    // }
+
   return (
     <>
       <main>
         <h2>Test</h2>
         <p>
-          API here
+          {stTags}
         </p>
       </main>
       <nav>

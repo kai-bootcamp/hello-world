@@ -4,6 +4,7 @@ const axiosClient = axios.create({
     baseURL: 'http://localhost:1323/',
     headers: {
         'Content-Type': 'application/json',
+        // 'Access-Control-Allow-Origin':'*'
         // 'Access-Control-Allow-Origin': "http://localhost:1323"
     },
 })

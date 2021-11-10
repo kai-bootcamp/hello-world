@@ -7,4 +7,6 @@ const strApi = {
     }
 }
 
+
+
 export default strApi;
