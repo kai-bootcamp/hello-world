@@ -1,6 +1,7 @@
 package main
 
 import (
+	"encoding/base64"
 	"encoding/json"
 	"fmt"
 	"html/template"
@@ -57,7 +58,10 @@ func homePage(w http.ResponseWriter, r *http.Request) {
 }
 
 func responseWithJSON(response http.ResponseWriter, r *http.Request) {
-	result, _ := json.Marshal("Welcome to blockchain " + strconv.Itoa(rand.Intn(100000)))
+	log.Println("handle request: ", r.URL)
+	var_str := "Welcome to blockchain " + strconv.Itoa(rand.Intn(100000))
+	var str string = "Welcome to Blockchain\n -- " + base64.StdEncoding.EncodeToString([]byte(var_str))
+	result, _ := json.Marshal(str)
 	response.Header().Set("Content-Type", "application/json")
 	response.Header().Set("Access-Control-Allow-Origin", "*")
 	response.WriteHeader(200)
