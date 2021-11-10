@@ -50,7 +50,7 @@ func helloHandler(w http.ResponseWriter, r *http.Request) {
 		http.Error(w, "wdwdwdw", http.StatusNotFound)
 		return
 	}
-	t, _ := template.ParseFiles("../../frontend/static/basictemplating.html")
+	t, _ := template.ParseFiles("./static/basictemplating.html")
 	if r.Method != http.MethodPost {
 		p := BlockChainPage{Title: "Test Page"}
 		t.Execute(w, p)
@@ -61,13 +61,13 @@ func helloHandler(w http.ResponseWriter, r *http.Request) {
 }
 
 func main() {
-	fileServer := http.FileServer(http.Dir("../../frontend/static/"))
+	fileServer := http.FileServer(http.Dir("./static"))
 
 	http.Handle("/", fileServer)
 	http.HandleFunc("/hello/", helloHandler)
 	http.HandleFunc("/blockChain/", func(w http.ResponseWriter, r *http.Request) {
 
-		t, _ := template.ParseFiles("../../frontend/static/basictemplating.html")
+		t, _ := template.ParseFiles("./static/basictemplating.html")
 		if r.Method != http.MethodPost {
 			//p := BlockChainPage{Title: "Test Page"}
 			t.Execute(w, nil)
