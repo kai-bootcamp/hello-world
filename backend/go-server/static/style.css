@@ -1,9 +1,4 @@
-<Head>
-    <meta name="viewport" content="width=device-width, initial-scale=1"/>
-    <!-- <link type="text/css" rel="stylesheet" href="style.css"/> -->
-    <link rel="stylesheet" href="style.css">
-    <style>
-        body {
+body {
   font-family: Arial, Helvetica, sans-serif;
 }
 * {
@@ -80,32 +75,3 @@
 .open-button:hover {
   opacity: 1;
 }
-
-    </style>
-</Head>
-{{if .Success}}
-    <h1>{{.Title}}</h1>
-    <h2>Balance is : {{.Address}}</h2>
-{{else}}
-<div class="form-popup" id="myForm"></div>
-    <h1>Contact  - 0x71c7656ec7ab88b098defb751b7401b5f6d8976f</h1>
-    <form method="POST" class="form-container">
-
-        <label for = "address">Address:</label><br />
-        <input type="text" name="address" placeholder="Enter Address" required with></textarea><br />
-        <button input type="submit" class="btn">Check Balance</button>
-    </form>
-</div>
-{{end}}
-
-<!-- {{if .Success}}
-    <h1>Thanks for your message!</h1>
-    <h2>{{.Address}}</h2>
-{{else}}
-    <h1>{{.Title}}</h1>
-    <form method="POST">
-        <label>Address:</label><br />
-        <textarea name="address"></textarea><br />
-        <input type="submit" title="test">
-    </form>
-{{end}} -->
