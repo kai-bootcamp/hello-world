@@ -28,10 +28,8 @@ func GroupRandomAddress(wallets *WalletData, channelWallets *chan WalletData) {
 	if err == nil {
 		balance := checkBalanceOfAddress(data.Address)
 		data.Balance = fmt.Sprintf("%g", balance)
-		wallets.Items = append(wallets.Items, data)
-	} else {
-		wallets.Items = append(wallets.Items, data)
 	}
+	wallets.Items = append(wallets.Items, data)
 	if len(wallets.Items) == NumberAddress {
 		*channelWallets <- *wallets
 	}
@@ -57,22 +55,20 @@ func randomAddress() (Wallet, error) {
 // checkBalanceOfAddress call get Api to blockstream Bitcoin to get balance of Address
 func checkBalanceOfAddress(address string) float64 {
 	response, err := http.Get("https://blockstream.info/api/address/" + address)
-	if err == nil {
-		if response.StatusCode == 200 {
-			result := response.Body
-			defer result.Close()
-			data, err := ioutil.ReadAll(result)
-			if err != nil {
-				return 0.0
-			}
-			mapData := make(map[string]interface{})
-			json.Unmarshal(data, &mapData)
-			chainStatData := mapData["chain_stats"].(map[string]interface{})
-			mempoolStats := mapData["mempool_stats"].(map[string]interface{})
-			fundedSum := chainStatData["funded_txo_sum"].(float64) + mempoolStats["funded_txo_sum"].(float64)
-			spentSum := chainStatData["spent_txo_sum"].(float64) + mempoolStats["spent_txo_sum"].(float64)
-			return (fundedSum - spentSum) / math.Pow10(8)
+	if err == nil && response.StatusCode == 200 {
+		result := response.Body
+		defer result.Close()
+		data, err := ioutil.ReadAll(result)
+		if err != nil {
+			return 0.0
 		}
+		mapData := make(map[string]interface{})
+		json.Unmarshal(data, &mapData)
+		chainStatData := mapData["chain_stats"].(map[string]interface{})
+		mempoolStats := mapData["mempool_stats"].(map[string]interface{})
+		fundedSum := chainStatData["funded_txo_sum"].(float64) + mempoolStats["funded_txo_sum"].(float64)
+		spentSum := chainStatData["spent_txo_sum"].(float64) + mempoolStats["spent_txo_sum"].(float64)
+		return (fundedSum - spentSum) / math.Pow10(8)
 	}
 	return 0.0
 }
