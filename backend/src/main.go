@@ -1,6 +1,7 @@
 package main
 
 import (
+    "github.com/gin-contrib/cors"
     "github.com/gin-gonic/gin"
     "k8s.io/apimachinery/pkg/util/rand"
 )
@@ -8,7 +9,9 @@ import (
 func main() {
     router := gin.Default()
 
-    router.GET("/rand-str", func(c *gin.Context) {
+    router.Use(cors.New(cors.Config{AllowAllOrigins: true}))
+
+    router.GET("/api/strings/random", func(c *gin.Context) {
         c.JSON(200, gin.H{
             "string": rand.String(20),
         })

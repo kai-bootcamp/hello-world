@@ -1,15 +1,21 @@
 services:
   go:
     build:
-      context: ./backend
-    ports:
-      - "8080:8080"
+      context: .
+      target: backend
+      dockerfile: Dockerfile
   nextjs:
     build:
-      context: ./frontend
-    ports:
-      - "3000:3000"
+      context: .
+      target: frontend
+      dockerfile: Dockerfile
     volumes:
       - ./frontend:/usr/src/app
       - /usr/src/app/node_modules
       - /usr/src/app/.next
+  nginx:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    ports:
+      - "80:80"
