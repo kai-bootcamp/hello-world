@@ -24,7 +24,7 @@ WORKDIR /api
 
 COPY --from=builder /api/app .
 
-EXPOSE 4000
+EXPOSE 8080
 
 ENTRYPOINT ["./app"]
 
@@ -66,11 +66,4 @@ ENV PORT 3000
 CMD ["node_modules/.bin/next", "start"]
 
 FROM nginx
-COPY ./nginx/nginx.conf /etc/nginx/conf.d/configfile.template
-
-ENV PORT 8080
-ENV HOST 0.0.0.0
-
-EXPOSE 8080
-
-CMD sh -c "envsubst '\$PORT' < /etc/nginx/conf.d/configfile.template > /etc/nginx/conf.d/default.conf && nginx -g 'daemon off;'"
+COPY ./nginx/nginx.conf /etc/nginx/conf.d/default.conf
