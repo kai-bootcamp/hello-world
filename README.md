@@ -8,6 +8,9 @@ A boot camp project of full-stack practice.
 - Docker compose
 
 ## Installation
+
 ```bash
 $ docker-compose up --build -d --remove-orphans
 ```
+
+Then go: http://localhost
