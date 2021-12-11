@@ -1,0 +1,20 @@
+basePath: /api
+info:
+  contact: {}
+paths:
+  /strings/random:
+    get:
+      consumes:
+      - application/json
+      description: Get a random string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            type: string
+      summary: Get a random string
+      tags:
+      - String
+swagger: "2.0"
