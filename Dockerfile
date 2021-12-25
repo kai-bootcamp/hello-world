@@ -65,5 +65,9 @@ ENV PORT 3000
 
 CMD ["node_modules/.bin/next", "start"]
 
+FROM frontend AS frontend_dev
+
+CMD ["node_modules/.bin/next", "dev"]
+
 FROM nginx
 COPY ./nginx/nginx.conf /etc/nginx/conf.d/default.conf

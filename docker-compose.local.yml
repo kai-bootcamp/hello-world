@@ -8,8 +8,10 @@ services:
   nextjs:
     build:
       context: .
-      target: frontend
+      target: frontend_dev
       dockerfile: Dockerfile
+    environment:
+      - NODE_ENV=development
     volumes:
       - ./frontend:/app
       - /app/node_modules
