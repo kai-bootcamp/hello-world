@@ -1,0 +1,16 @@
+{
+    "name": "hello-world-dir",
+    "version": "0.1.0",
+    "private": true,
+    "engines": {
+        "node": "16.x"
+    },
+    "scripts": {
+      "dev": "next dev",
+      "build": "cd ./ frontend && npm run build",
+      "start": "cd ./frontend && npm run start",
+      "lint": "next lint",
+      "heroku-postbuild": "cd ./frontend && npm run build"
+    }
+  }
+  
