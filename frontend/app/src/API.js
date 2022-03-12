@@ -1,4 +1,4 @@
-const hostAPI = "http://localhost:9000";
+const hostAPI = "https://random-text-be.herokuapp.com";
 
 const API = {
   getRandomString: async () => {

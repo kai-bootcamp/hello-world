@@ -17,8 +17,9 @@ const App = () => {
 
   const randomCharacter = async () => {
     let response;
+    let random = Math.random() * 10;
     if (input === 0) {
-      response = await API.getRandomCharacters(4);
+      response = await API.getRandomCharacters(random);
     } else {
       response = await API.getRandomCharacters(input);
     }
